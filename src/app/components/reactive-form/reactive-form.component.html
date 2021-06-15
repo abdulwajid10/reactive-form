@@ -20,6 +20,30 @@
         </div>
         <div class="row form-group">
             <div class="col-md-12">
+                <label for="lastName">Password</label>
+                <input type="text" class="form-control" formControlName="Password" placeholder="Enter Password">
+                <div *ngIf="f.Password.errors?.required && f.Password.touched">
+                   Password required.
+                </div>
+                <div *ngIf="f.Password.errors?.minlength">
+                    Password must be atleast 6 characters.
+                 </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <label for="Confirm-password">Confirm Password</label>
+                <input type="text" class="form-control" formControlName="Confirmpassword" placeholder="Enter Password">
+                <div *ngIf="f.Confirmpassword.errors?.required && f.Confirmpassword.touched">
+                   Confirm password is required.
+                </div>
+                <div *ngIf="f.Confirmpassword.errors?.Mustmatch">
+                    Confirm password did not match.
+                 </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
                 <label for="Email">Email</label>
                 <input type="email" class="form-control" formControlName="email" placeholder="Enter Email">
                 <div *ngIf="reactiveForm.get('email')?.errors?.required && reactiveForm.get('email')?.touched">

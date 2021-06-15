@@ -16,6 +16,8 @@ export class ReactiveFormComponent implements OnInit {
     this.reactiveForm = this._fb.group({
       firstName: [null, Validators.required],
       lastName: [null, [Validators.required, Validators.minLength(2)]],
+      Password: [null, [Validators.required, Validators.minLength(6)]],
+      Confirmpassword: [null, [Validators.required, Validators.minLength(6)]],
       email: [null, [Validators.required, Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)]],
       address: this._fb.group({
         expiryDate: [null, Validators.required],
@@ -24,18 +26,36 @@ export class ReactiveFormComponent implements OnInit {
         state: [null, Validators.required],
         zipcode: [null, Validators.required]
       })
-    });
+    },
+    {
+      validators: this.Mustmatch('Password', 'Confirmpassword')
+    }
+    );
+  }
+
+  get f(){
+    return this.reactiveForm.controls;
+  }
+
+  Mustmatch(pass: string, confirmpass: string){
+    return (FormGroup:FormGroup)=>{
+      const control = FormGroup.controls[pass];
+      const matchControl = FormGroup.controls[confirmpass];
+      if(matchControl.errors && !matchControl.errors.Mustmatch){
+        return
+      }
+      if(control.value !== matchControl.value){
+        matchControl.setErrors({Mustmatch:true})
+      }else{
+        matchControl.setErrors(null);
+      }
+    }
   }
 
   // get firstName() {
   //   const temp = <FormGroup>this.reactiveForm.controls.firstName;
   //   return temp.controls.firstName;
   // }
-
-  get email() {
-    const temp = <FormGroup>this.reactiveForm.controls.email;
-    return temp.controls.email;
-  }
 
   submitHandler(){
     console.log(this.reactiveForm);
